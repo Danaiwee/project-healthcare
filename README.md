@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# **Full-Stack Healthcare Profile Management Platform with Next.js**
 
-## Getting Started
+This project is a healthcare-focused web application where patients can securely fill in and manage their personal health information, while administrators can monitor patient data in **real time**. Built with a modern full-stack approach using **Next.js, MongoDB, JWT-based authentication, Pusher, and Tailwind CSS**, the application is designed to store and track patient information over time with a clean,**responsive UI and real-time synchronization.**
 
-First, run the development server:
+# **Backend & Server-Side Services**
+
+- **Next.js API Routes**
+
+  - Handles authentication, user registration, and profile management
+
+- **Token-Based Authentication (JWT)**
+
+  - Implements sign-in and sign-up flows using JSON Web Tokens
+  - Passwords are securely hashed using bcryptjs
+
+- **MongoDB with Mongoose**
+
+  - Stores patient profiles, authentication data, and role information
+  - Schema-based modeling ensures reliable and structured data storage
+
+- **Real-Time Updates (Pusher)**
+  - Admin dashboard updates instantly when
+    - A new patient signs up successfully
+    - A patient updates their profile information
+
+# **Frontend Development**
+
+- **Next.js with TypeScript**
+
+  - Provides routing, SSR, and full-stack capabilities
+  - Type-safe and maintainable codebase
+
+- **Tailwind CSS**
+
+  - Utility-first styling for a responsive and modern UI
+
+- **Shadcn Components**
+
+  - Accessible UI primitives such as dialogs, selects, and accordions
+  - Improves form usability and admin interface clarity
+
+- **Lucide React Icons**
+
+  - Minimal and consistent icons used throughout the application
+
+- **Form Handling**
+  - React Hook Form for efficient form state management
+  - Zod integration via @hookform/resolvers for validation
+
+## **Application Features & Page Flow**
+
+**1.Home Page**
+
+- Accessible by both patients and admins
+- Serves as the main entry point of the application
+
+**2.Authentication Pages (Sign In / Sign Up)**
+
+- Secure JWT-based authentication system
+- Patients can register and log in using validated credentials
+
+**3.Profile Page (Patient Only)**
+
+- Allows patients to
+  - View personal and health-related information
+  - Update their profile details
+- All updates are reflected instantly on the Admin Dashboard
+
+**4.Admin Dashboard (Admin Only)**
+
+- Displays a real-time list of registered patients
+- Updates automatically when
+  - A new patient signs up
+  - A patient updates their profile
+
+
+## **Technologies Used** 
+- ![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=next.js&logoColor=white&style=flat) **Next.js**  
+- ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat) **TypeScript**  
+- ![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?logo=mongodb&logoColor=white&style=flat) **MongoDB + Mongoose** 
+- ![Pusher](https://img.shields.io/badge/-Pusher-300D4F?logo=pusher&logoColor=white&style=flat) **Pusher (Real-Time Updates)**  
+- ![TailwindCSS](https://img.shields.io/badge/-Tailwind%20CSS-38B2AC?logo=tailwindcss&logoColor=white&style=flat) **Tailwind CSS**
+- ![shadcn/ui](https://img.shields.io/badge/-shadcn/ui-000000?style=flat) **shadcn/ui**  
+- ![Radix UI](https://img.shields.io/badge/-Radix%20UI-111111?logo=radixui&logoColor=white&style=flat) **Radix UI**  
+- ![Lucide](https://img.shields.io/badge/-Lucide%20Icons-000000?logo=lucide&logoColor=white&style=flat) **Lucide React**  
+- ![React Hook Form](https://img.shields.io/badge/-React%20Hook%20Form-EC5990?logo=reacthookform&logoColor=white&style=flat) **React Hook Form**  
+- ![Zod](https://img.shields.io/badge/-Zod-3E64FF?logo=zod&logoColor=white&style=flat) **Zod**
+- ![Sonner](https://img.shields.io/badge/-Sonner-191919?style=flat&logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCI+PHJlY3Qgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiByeD0iMiIvPjwvc3ZnPg==) **Sonner**
+
+
+
+# **Installation & Setup**
+
+Follow the steps below to clone, configure, and run the project locally.
+
+## **1. Clone the Repository**
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+git clone https://github.com/your-username/your-repository-name.git
+cd your-repository-name
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
