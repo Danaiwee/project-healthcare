@@ -73,21 +73,19 @@ This project is a healthcare-focused web application where patients can securely
   - A new patient signs up
   - A patient updates their profile
 
+## **Technologies Used**
 
-## **Technologies Used** 
-- ![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=next.js&logoColor=white&style=flat) **Next.js**  
-- ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat) **TypeScript**  
-- ![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?logo=mongodb&logoColor=white&style=flat) **MongoDB + Mongoose** 
-- ![Pusher](https://img.shields.io/badge/-Pusher-300D4F?logo=pusher&logoColor=white&style=flat) **Pusher (Real-Time Updates)**  
+- ![Next.js](https://img.shields.io/badge/-Next.js-000000?logo=next.js&logoColor=white&style=flat) **Next.js**
+- ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?logo=typescript&logoColor=white&style=flat) **TypeScript**
+- ![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?logo=mongodb&logoColor=white&style=flat) **MongoDB + Mongoose**
+- ![Pusher](https://img.shields.io/badge/-Pusher-300D4F?logo=pusher&logoColor=white&style=flat) **Pusher (Real-Time Updates)**
 - ![TailwindCSS](https://img.shields.io/badge/-Tailwind%20CSS-38B2AC?logo=tailwindcss&logoColor=white&style=flat) **Tailwind CSS**
-- ![shadcn/ui](https://img.shields.io/badge/-shadcn/ui-000000?style=flat) **shadcn/ui**  
-- ![Radix UI](https://img.shields.io/badge/-Radix%20UI-111111?logo=radixui&logoColor=white&style=flat) **Radix UI**  
-- ![Lucide](https://img.shields.io/badge/-Lucide%20Icons-000000?logo=lucide&logoColor=white&style=flat) **Lucide React**  
-- ![React Hook Form](https://img.shields.io/badge/-React%20Hook%20Form-EC5990?logo=reacthookform&logoColor=white&style=flat) **React Hook Form**  
+- ![shadcn/ui](https://img.shields.io/badge/-shadcn/ui-000000?style=flat) **shadcn/ui**
+- ![Radix UI](https://img.shields.io/badge/-Radix%20UI-111111?logo=radixui&logoColor=white&style=flat) **Radix UI**
+- ![Lucide](https://img.shields.io/badge/-Lucide%20Icons-000000?logo=lucide&logoColor=white&style=flat) **Lucide React**
+- ![React Hook Form](https://img.shields.io/badge/-React%20Hook%20Form-EC5990?logo=reacthookform&logoColor=white&style=flat) **React Hook Form**
 - ![Zod](https://img.shields.io/badge/-Zod-3E64FF?logo=zod&logoColor=white&style=flat) **Zod**
 - ![Sonner](https://img.shields.io/badge/-Sonner-191919?style=flat&logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCI+PHJlY3Qgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiByeD0iMiIvPjwvc3ZnPg==) **Sonner**
-
-
 
 # **Installation & Setup**
 
@@ -96,7 +94,51 @@ Follow the steps below to clone, configure, and run the project locally.
 ## **1. Clone the Repository**
 
 ```bash
-git clone https://github.com/your-username/your-repository-name.git
+git clone https://github.com/Danaiwee/project-healthcare.git
 cd your-repository-name
+```
 
+## **2. Install Dependencies**
 
+Make sure you have Node.js (v18 or later) installed.
+
+```bash
+npm install
+```
+
+## **3. Environment Variables**
+
+Create a .env file in the root directory and add the following environment variables:
+
+```bash
+# MongoDB
+MONGODB_URI=your_mongodb_connection_string
+
+# JWT
+JWT_SECRET=your_jwt_secret_key
+
+# Pusher
+PUSHER_APP_ID=your_pusher_app_id
+PUSHER_KEY=your_pusher_key
+PUSHER_SECRET=your_pusher_secret
+PUSHER_CLUSTER=your_pusher_cluster
+```
+
+## **4. Run the Development Server**
+
+```bash
+npm run dev
+```
+
+The application will be available at:
+
+```bash
+http://localhost:3000
+```
+
+## **5.Build for Production (Optional)**
+
+```bash
+npm run build
+npm start
+```
