@@ -11,6 +11,7 @@ import mongoose from "mongoose";
 import dbConnect from "../mongoose";
 import { revalidatePath } from "next/cache";
 import { NotFoundError } from "../http-errors";
+import { pusherServer } from "../pusher";
 
 export async function signUp(
   params: SignUpParams
@@ -62,6 +63,8 @@ export async function signUp(
     await generateTokenAndSetCookie(newUser._id);
 
     await session.commitTransaction();
+
+    await pusherServer.trigger("admin-dashboard", "new-patient", newUser);
 
     revalidatePath("/admin");
 
@@ -199,6 +202,12 @@ export async function updateUserProfile(
       userId,
       { $set: updateData },
       { new: true }
+    );
+
+    await pusherServer.trigger(
+      "admin-dashboard",
+      "update-patient",
+      updatedUser
     );
 
     revalidatePath("/admin");

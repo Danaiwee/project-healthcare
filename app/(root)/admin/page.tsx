@@ -1,7 +1,7 @@
 import HeaderContent from "@/components/HeaderContent";
 import PatientCard from "@/components/PatientCard";
+import PatientData from "@/components/PatientData";
 
-import { AUTHUSER, PATIENTS } from "@/constants";
 import { getLoggedInUser, getPatients } from "@/lib/actions/user.action";
 
 import { Metadata } from "next";
@@ -34,12 +34,7 @@ const AdminPage = async () => {
           subtext="View all patients details"
         />
 
-        <div className="w-full flex flex-col gap-3 max-w-xl">
-          {patients &&
-            patients.map((patient) => (
-              <PatientCard key={patient._id.toString()} patient={patient} />
-            ))}
-        </div>
+        <PatientData initialPatients={patients || []} />
       </div>
     </section>
   );
