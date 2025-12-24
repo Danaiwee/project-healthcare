@@ -39,6 +39,11 @@ declare global {
     emergencyContact: string;
     religion?: string;
   }
+
+  interface RouteParams {
+    params: Promise<Record<string, string>>;
+    searchParams: Promise<Record<string, string>>;
+  }
 }
 
 export {};

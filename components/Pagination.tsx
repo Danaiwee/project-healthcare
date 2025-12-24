@@ -1,70 +1,50 @@
 "use client";
-
-import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import { formUrlQuery } from "@/lib/url";
-
 import { Button } from "./ui/button";
 
 interface PaginationProps {
   page: number;
-  totalPages: number;
+  isNext: boolean;
 }
 
-const Pagination = ({ page, totalPages }: PaginationProps) => {
+const Pagination = ({ page = 1, isNext }: PaginationProps) => {
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const searhcParams = useSearchParams();
 
-  const handleNavigation = (type: "next" | "prev") => {
-    const pageNumber = type === "prev" ? page - 1 : page + 1;
+  const handleNavigation = (type: "prev" | "next") => {
+    const nextPageNumber =
+      type === "prev" ? Number(page) - 1 : Number(page) + 1;
 
     const newUrl = formUrlQuery({
-      params: searhcParams.toString(),
+      params: searchParams.toString(),
       key: "page",
-      value: pageNumber.toString(),
+      value: nextPageNumber.toString(),
     });
 
     router.push(newUrl, { scroll: false });
   };
 
   return (
-    <div className="w-full flex justify-between gap-3 mt-3">
+    <div className="flex w-full items-center justify-center gap-3 mt-5">
       <Button
-        className="p-0 hover:bg-transparent cursor-pointer"
-        variant="ghost"
-        size="lg"
-        disabled={Number(page) <= 1}
+        className="bg-blue-gradient flex min-h-9 items-center justify-center gap-2 border border-gray-200"
         onClick={() => handleNavigation("prev")}
+        disabled={Number(page) <= 1}
       >
-        <Image
-          src="/icons/arrow-left.svg"
-          alt="arrow"
-          width={20}
-          height={20}
-          className="mr-2"
-        />
-        Prev
+        <p className="body-medium text-dark200_light800">Prev</p>
       </Button>
-      <p className="text-[14px] flex items-center px-2">
-        {page} / {totalPages}
-      </p>
+
+      <div className="flex items-center justify-center rounded-md bg-primary-500 px-3.5 py-2">
+        <p className="body-semibold text-gray-900">{page}</p>
+      </div>
 
       <Button
-        size="lg"
-        variant="ghost"
-        className="p-0 hover:bg-transparent cursor-pointer"
+        className="bg-blue-gradient flex min-h-9 items-center justify-center gap-2 border border-gray-200"
         onClick={() => handleNavigation("next")}
-        disabled={Number(page) >= totalPages}
+        disabled={!isNext}
       >
-        Next
-        <Image
-          src="/icons/arrow-left.svg"
-          alt="arrow"
-          width={20}
-          height={20}
-          className="ml-2 -scale-x-100"
-        />
+        <p className="body-medium text-dark200_light800">Next</p>
       </Button>
     </div>
   );

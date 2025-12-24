@@ -53,3 +53,11 @@ export const ProfilSchema = z.object({
 export const UpdateProfileSchema = ProfilSchema.extend({
   userId: z.string().min(1, "User id is required"),
 });
+
+export const PaginatedSearchParamsSchema = z.object({
+  page: z.number().min(1, "Page number is required").default(1),
+  pageSize: z.number().min(1, "Page size is required").default(10),
+  query: z.string().optional(),
+  filter: z.string().optional(),
+  sort: z.string().optional()
+});

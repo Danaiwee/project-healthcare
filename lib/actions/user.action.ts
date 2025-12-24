@@ -2,12 +2,17 @@
 
 import User, { IUser, IUserDoc } from "@/database/user.model";
 import action from "../handler/action";
-import { SignInSchema, SignupSchema, UpdateProfileSchema } from "../validation";
+import {
+  PaginatedSearchParamsSchema,
+  SignInSchema,
+  SignupSchema,
+  UpdateProfileSchema,
+} from "../validation";
 import handleError from "../handler/error";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-import mongoose from "mongoose";
+import mongoose, { QueryFilter } from "mongoose";
 import dbConnect from "../mongoose";
 import { revalidatePath } from "next/cache";
 import { NotFoundError } from "../http-errors";
@@ -238,16 +243,62 @@ export async function generateTokenAndSetCookie(userId: string) {
   });
 }
 
-export async function getPatients(): Promise<
-  ActionResponse<{ patients: IUserDoc[] }>
-> {
+export async function getPatients(
+  params: PaginatedSearchParams
+): Promise<ActionResponse<{ patients: IUserDoc[]; isNext: boolean }>> {
+  const validationResult = await action({
+    params,
+    schema: PaginatedSearchParamsSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { page = 1, pageSize = 5, query, filter } = validationResult.params!;
+
+  const skip = (Number(page) - 1) * pageSize;
+  const limit = Number(pageSize);
+
+  const filterQuery: QueryFilter<IUser> = { role: "patient" };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let sortCriteria: any = { hn: -1 };
+
   try {
-    const users = await User.find({ role: "patient" }).sort({ hn: 1 }).lean();
+    if (query) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const queryConditions: any[] = [
+        { firstName: { $regex: query, $options: "i" } },
+        { middleName: { $regex: query, $options: "i" } },
+        { lastName: { $regex: query, $options: "i" } },
+      ];
+
+      const numericQuery = parseInt(query, 10);
+      if (!isNaN(numericQuery)) {
+        queryConditions.push({ hn: numericQuery });
+      }
+
+      filterQuery.$or = queryConditions;
+    }
+
+    if (filter === "newest") sortCriteria = { hn: -1 };
+    if (filter === "oldest") sortCriteria = { hn: 1 };
+
+    const totalPatients = await User.countDocuments(filterQuery);
+
+    const patients = await User.find(filterQuery)
+      .sort(sortCriteria)
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    const isNext = totalPatients > skip + patients.length;
 
     return {
       success: true,
       data: {
-        patients: JSON.parse(JSON.stringify(users)),
+        patients: JSON.parse(JSON.stringify(patients)),
+        isNext,
       },
     };
   } catch (error) {

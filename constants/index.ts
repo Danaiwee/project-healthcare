@@ -11,7 +11,7 @@ export const AUTHUSER = {
   language: "english",
   nationality: "American",
   emergencyContact: "Abigail Adams: +1 (555) 987-6543",
-  religion: "Christianity"
+  religion: "Christianity",
 };
 
 export const GENDER = [
@@ -105,4 +105,9 @@ export const PATIENTS: User[] = [
     emergencyContact: "Priya Mehta: +91 98200 12345",
     religion: "Hinduism",
   },
+];
+
+export const ADMIN_FILTERS = [
+  { name: "Newest", value: "newest" },
+  { name: "Oldest", value: "oldest" },
 ];
