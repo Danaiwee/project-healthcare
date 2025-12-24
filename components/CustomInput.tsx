@@ -19,13 +19,13 @@ const CustomInput = <T extends FieldValues>({
   type = "text",
 }: CustomInputProps<T>) => {
   return (
-    <div className='flex-1'>
+    <div className="flex-1">
       <FormField
         control={control}
         name={name}
         render={({ field }) => (
           <div className="form-item">
-            <FormLabel className='text-gray-700'>{label}</FormLabel>
+            <FormLabel className="text-gray-700">{label}</FormLabel>
             <div className="flex w-full flex-col">
               <FormControl>
                 <Input

@@ -151,7 +151,7 @@ const SignUpForm = () => {
           <CustomInput
             control={form.control}
             name="emergencyContact"
-            label="Emergency Contact (Name)"
+            label="Emergency Contact (Name and phone number)"
             placeholder="Enter your emergency contact"
           />
 

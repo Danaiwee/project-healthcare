@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     "Welcome back to community that easily manage your information and connect with healthcare providers in real-time. Your privacy is our priority",
 };
 
-const SignInPage = async() => {
+const SignInPage = async () => {
   const response = await getLoggedInUser();
   const authUser = response?.success ? response.data?.user : null;
 

@@ -4,7 +4,13 @@ export const SignupSchema = z.object({
   firstName: z.string().min(1, "First Name is required"),
   middleName: z.string().optional(),
   lastName: z.string().min(1, "Last Name is required"),
-  dateOfBirth: z.string().min(1, "Date of Birth is required"),
+  dateOfBirth: z
+  .string()
+  .min(1, "Date of Birth is required")
+  .regex(
+    /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/,
+    "Invalid date format. Please use YYYY-MM-DD (e.g., 1995-04-17)"
+  ),
   gender: z.string().min(1, "Gender is required"),
   phone: z.string().min(1, "Phone number is required"),
   email: z.email().min(1, "Email is required"),
