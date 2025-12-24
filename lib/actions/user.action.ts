@@ -1,0 +1,247 @@
+"use server";
+
+import User, { IUser, IUserDoc } from "@/database/user.model";
+import action from "../handler/action";
+import { SignInSchema, SignupSchema, UpdateProfileSchema } from "../validation";
+import handleError from "../handler/error";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
+import mongoose from "mongoose";
+import dbConnect from "../mongoose";
+import { revalidatePath } from "next/cache";
+import { NotFoundError } from "../http-errors";
+
+export async function signUp(
+  params: SignUpParams
+): Promise<ActionResponse<{ user: IUser }>> {
+  const validationResult = await action({
+    params,
+    schema: SignupSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { password, email } = validationResult.params;
+  const role = "patient";
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const isExistingUser = await User.findOne({ email });
+    if (isExistingUser) {
+      throw new Error("Email is already exists");
+    }
+
+    const lastHnUser = await User.findOne({}, { hn: 1 })
+      .sort({ hn: -1 })
+      .session(session);
+
+    const newHnNumber = lastHnUser ? (lastHnUser.hn || 0) + 1 : 1;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const [newUser] = await User.create(
+      [
+        {
+          ...params,
+          password: hashedPassword,
+          hn: role === "patient" ? newHnNumber : 0,
+        },
+      ],
+      { session }
+    );
+
+    if (!newUser) {
+      throw new Error("Failed to create new user");
+    }
+
+    await generateTokenAndSetCookie(newUser._id);
+
+    await session.commitTransaction();
+
+    revalidatePath("/admin");
+
+    return {
+      success: true,
+      data: {
+        user: JSON.parse(JSON.stringify(newUser)),
+      },
+    };
+  } catch (error) {
+    await session.abortTransaction();
+    return handleError(error) as ErrorResponse;
+  } finally {
+    await session.endSession();
+  }
+}
+
+export async function signIn(
+  params: SignInParams
+): Promise<ActionResponse<{ user: IUser }>> {
+  const validationResult = await action({
+    params,
+    schema: SignInSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { email, password } = validationResult.params!;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) throw new NotFoundError(user);
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) throw new Error("Invalid credentials");
+
+    await generateTokenAndSetCookie(user._id);
+
+    return {
+      success: true,
+      data: {
+        user: JSON.parse(JSON.stringify(user)),
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function getLoggedInUser(): Promise<
+  | ActionResponse<{
+      user: IUserDoc;
+    }>
+  | null
+  | undefined
+> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("auth_token")?.value;
+
+  if (!token) return null;
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET!
+    ) as MyTokenPayload;
+    if (!decoded) throw new Error("Unauthorized token");
+
+    await dbConnect();
+
+    const user = await User.findById(decoded.userId as string)
+      .select("-password")
+      .lean();
+
+    return {
+      success: true,
+      data: {
+        user: JSON.parse(JSON.stringify(user)),
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function logout(): Promise<ActionResponse> {
+  const cookieStore = await cookies();
+
+  cookieStore.set("auth_token", "", {
+    httpOnly: true,
+    expires: new Date(0),
+    path: "/",
+  });
+
+  revalidatePath("/");
+
+  return { success: true };
+}
+
+export async function updateUserProfile(
+  params: UpdateUserParams
+): Promise<ActionResponse<{ user: IUserDoc }>> {
+  const validationResult = await action({
+    params,
+    schema: UpdateProfileSchema,
+    authorize: true,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const { userId, email, ...updateData } = validationResult.params!;
+  const authUserId = validationResult?.user?._id;
+
+  try {
+    if (userId !== authUserId?.toString())
+      throw new Error("You cannot edit profile");
+
+    const currentUser = await User.findById(userId);
+    if (!currentUser) throw new NotFoundError("User");
+
+    if (email && email !== currentUser.email) {
+      const isExistingEmail = await User.findOne({ email });
+      if (isExistingEmail) {
+        throw new Error("Email is already exists");
+      }
+
+      (updateData as Partial<IUser>).email = email;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateData },
+      { new: true }
+    );
+
+    revalidatePath("/admin");
+
+    return {
+      success: true,
+      data: {
+        user: JSON.parse(JSON.stringify(updatedUser)),
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
+
+export async function generateTokenAndSetCookie(userId: string) {
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET!, {
+    expiresIn: "1d",
+  });
+  const cookieStore = await cookies();
+
+  cookieStore.set("auth_token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 24 * 60 * 60 * 1000,
+    path: "/",
+  });
+}
+
+export async function getPatients(): Promise<
+  ActionResponse<{ patients: IUserDoc[] }>
+> {
+  try {
+    const users = await User.find({ role: "patient" }).sort({ hn: 1 }).lean();
+
+    return {
+      success: true,
+      data: {
+        patients: JSON.parse(JSON.stringify(users)),
+      },
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+}
