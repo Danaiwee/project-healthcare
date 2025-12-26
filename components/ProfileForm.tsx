@@ -45,15 +45,18 @@ const ProfileForm = ({ user }: ProfileFormProps) => {
   const handleUpdate = async (data: z.infer<typeof ProfilSchema>) => {
     setIsLoading(true);
     try {
-      const { success } = await updateUserProfile({ ...data, userId });
+      const result = await updateUserProfile({ ...data, userId });
 
-      if (success) {
-        toast("Success", { description: "Updated profile successfully" });
-      } else {
-        toast("Error", { description: "An error occurred, please try again" });
+      if (!result.success) {
+        throw new Error(result.error?.message || "An error occurred");
       }
-    } catch (error) {
+
+      toast("Success", { description: "Updated profile successfully" });
+      return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.log(error);
+      toast("Error", { description: error?.message || "An error occurred" });
     } finally {
       setIsLoading(false);
     }

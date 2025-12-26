@@ -13,10 +13,10 @@ const AuthLink = ({ authUser }: AuthLinkProps) => {
     <>
       {!authUser ? (
         <>
-          <Button asChild className="text-lg p-6" variant="secondary">
+          <Button asChild className="text-md sm:text-lg p-6" variant="secondary">
             <Link href={ROUTES.signIn}>Sign in</Link>
           </Button>
-          <Button asChild className="text-lg p-6" variant="outline">
+          <Button asChild className="text-md sm:text-lg p-6" variant="outline">
             <Link href={ROUTES.signUp}>Sign up</Link>
           </Button>
         </>

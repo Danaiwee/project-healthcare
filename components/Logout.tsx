@@ -23,7 +23,7 @@ const Logout = () => {
   };
 
   return (
-    <Button className="text-lg p-6" variant="secondary" onClick={handleLogout}>
+    <Button className="text-md sm:text-lg p-6" variant="secondary" onClick={handleLogout}>
       {isLoading ? "Loading..." : "Sign out"}
     </Button>
   );

@@ -103,7 +103,7 @@ export async function signIn(
 
   try {
     const user = await User.findOne({ email });
-    if (!user) throw new NotFoundError(user);
+    if (!user) throw new Error("Invalid credentails");
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) throw new Error("Invalid credentials");

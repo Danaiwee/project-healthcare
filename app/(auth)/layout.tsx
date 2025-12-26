@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <main className="flex min-h-screen w-full justify-between font-inter">
+    <main className="auth-layout">
       {children}
 
       <div className="auth-asset">

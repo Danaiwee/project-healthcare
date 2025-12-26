@@ -43,16 +43,20 @@ const SignUpForm = () => {
   const handleSubmitForm = async (data: z.infer<typeof SignupSchema>) => {
     setIsLoading(true);
     try {
-      const { success } = await signUp(data);
+      const result = await signUp(data);
 
-      if (success) {
-        toast("Success", { description: "Signed up successfully" });
-        router.push("/");
-      } else {
-        toast("Error", { description: "Failed to sign up" });
+      if (!result.success) {
+        throw new Error(result.error?.message || "An error occurred");
       }
-    } catch (error) {
+
+      toast("Success", { description: "Signed up successfully" });
+      router.push("/");
+
+      return;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.log(error);
+      toast("Error", { description: error?.message || "An error occurred" });
     } finally {
       setIsLoading(false);
     }

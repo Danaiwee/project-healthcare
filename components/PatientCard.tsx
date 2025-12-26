@@ -33,31 +33,27 @@ const PatientCard = ({ patient }: PatientCardProps) => {
   const formattedHnNumber = formatHN(hn);
 
   return (
-    <Accordion
-      type="single"
-      collapsible
-      className="w-full border-b border-gray-100"
-    >
+    <Accordion type="single" collapsible className="patient-card">
       <AccordionItem value={id} className="border px-4 rounded-lg">
         <AccordionTrigger>
-          <div className="w-full flex flex-col sm:flex-row sm:items-center justify-between pz-10">
+          <div className="patient-card_trigger">
             <div className="flex-1 flex gap-1">
-              <h3 className="text-gray-700 font-semibold text-md">HN: </h3>
-              <p className="text-gray-500 font-semibold text-md uppercase">
+              <h3 className="patient-card_trigger-header">HN: </h3>
+              <p className="patient-card_trigger-content">
                 {formattedHnNumber}
               </p>
             </div>
 
             <div className="flex-2 flex gap-1">
-              <h3 className="text-gray-700 font-semibold text-md">Name: </h3>
-              <p className="text-gray-500 font-semibold text-md uppercase">
+              <h3 className="patient-card_trigger-header">Name: </h3>
+              <p className="patient-card_trigger-content">
                 {`${firstName} ${middleName} ${lastName}`}
               </p>
             </div>
 
             <div className="flex-1 flex gap-1 sm:justify-end">
-              <h3 className="text-gray-700 font-semibold text-md">Age: </h3>
-              <p className="text-gray-500 font-semibold text-md uppercase">
+              <h3 className="patient-card_trigger-header">Age: </h3>
+              <p className="patient-card_trigger-content">
                 {calculateAge(dateOfBirth)}
               </p>
             </div>
@@ -65,82 +61,64 @@ const PatientCard = ({ patient }: PatientCardProps) => {
         </AccordionTrigger>
         <AccordionContent className="mt-3">
           <div className="flex flex-col gap-2 sm:gap-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <div className="patient-card_content">
               {/*Date of Birth and Gender*/}
               <div className="flex-1 flex gap-2">
-                <h3 className="text-gray-700 font-semibold text-md">
-                  Date Of Birth:{" "}
-                </h3>
-                <p className="text-gray-500 font-semibold text-md uppercase">
+                <h3 className="patient-card_content-header">Date Of Birth: </h3>
+                <p className="patient-card_content-upper">
                   {formatBirthDate(dateOfBirth)}
                 </p>
               </div>
               <div className="flex-1 flex gap-2">
-                <h3 className="text-gray-700 font-semibold text-md">
-                  Gender:{" "}
-                </h3>
-                <p className="text-gray-500 font-semibold text-md uppercase">
-                  {gender}
-                </p>
+                <h3 className="patient-card_content-header">Gender: </h3>
+                <p className="patient-card_content-upper">{gender}</p>
               </div>
             </div>
 
             {/*Email and Phone*/}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <div className="patient-card_content">
               <div className="flex-1 flex gap-2">
-                <h3 className="text-gray-700 font-semibold text-md">Email: </h3>
-                <p className="text-gray-500 font-semibold text-md">{email}</p>
+                <h3 className="patient-card_content-header">Email: </h3>
+                <p className="patient-card_content-lower">{email}</p>
               </div>
               <div className="flex-1 flex gap-2">
-                <h3 className="text-gray-700 font-semibold text-md">
-                  Phone Number:{" "}
-                </h3>
-                <p className="text-gray-500 font-semibold text-md">{phone}</p>
+                <h3 className="patient-card_content-header">Phone Number: </h3>
+                <p className="patient-card_content-lower">{phone}</p>
               </div>
             </div>
 
             {/*Address*/}
             <div className="flex-1 flex gap-2">
-              <h3 className="text-gray-700 font-semibold text-md">Address: </h3>
-              <p className="text-gray-500 font-semibold text-md">{address}</p>
+              <h3 className="patient-card_content-header">Address: </h3>
+              <p className="patient-card_content-lower">{address}</p>
             </div>
 
             {/*Language and Nationality*/}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <div className="patient-card_content">
               <div className="flex-1 flex gap-2">
-                <h3 className="text-gray-700 font-semibold text-md">
+                <h3 className="patient-card_content-header">
                   Preferred Language:{" "}
                 </h3>
-                <p className="text-gray-500 font-semibold text-md uppercase">
-                  {language}
-                </p>
+                <p className="patient-card_content-upper">{language}</p>
               </div>
               <div className="flex-1 flex gap-2">
-                <h3 className="text-gray-700 font-semibold text-md">
-                  Nationality:{" "}
-                </h3>
-                <p className="text-gray-500 font-semibold text-md">
-                  {nationality}
-                </p>
+                <h3 className="patient-card_content-header">Nationality: </h3>
+                <p className="patient-card_content-lower">{nationality}</p>
               </div>
             </div>
 
             {/*Emergency Contact*/}
             <div className="flex-1 flex gap-2">
-              <h3 className="text-gray-700 font-semibold text-md">
+              <h3 className="patient-card_content-header">
                 Emergency Contact:{" "}
               </h3>
-              <p className="text-gray-500 font-semibold text-md">
-                {emergencyContact}
-              </p>
+              <p className="patient-card_content-lower">{emergencyContact}</p>
             </div>
 
             {/*Religion*/}
             <div className="flex-1 flex gap-2">
-              <h3 className="text-gray-700 font-semibold text-md">
-                Religion:{" "}
-              </h3>
-              <p className="text-gray-500 font-semibold text-md">{religion}</p>
+              <h3 className="patient-card_content-header">Religion: </h3>
+              <p className="patient-card_content-lower">{religion}</p>
             </div>
           </div>
         </AccordionContent>
