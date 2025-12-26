@@ -81,7 +81,8 @@ export async function signUp(
     };
   } catch (error) {
     await session.abortTransaction();
-    return handleError(error) as ErrorResponse;
+    const errorResponse = handleError(error, "server");
+    return JSON.parse(JSON.stringify(errorResponse));
   } finally {
     await session.endSession();
   }
@@ -117,7 +118,8 @@ export async function signIn(
       },
     };
   } catch (error) {
-    return handleError(error) as ErrorResponse;
+    const errorResponse = handleError(error, "server");
+    return JSON.parse(JSON.stringify(errorResponse));
   }
 }
 
@@ -153,7 +155,8 @@ export async function getLoggedInUser(): Promise<
       },
     };
   } catch (error) {
-    return handleError(error) as ErrorResponse;
+    const errorResponse = handleError(error, "server");
+    return JSON.parse(JSON.stringify(errorResponse));
   }
 }
 
@@ -224,7 +227,8 @@ export async function updateUserProfile(
       },
     };
   } catch (error) {
-    return handleError(error) as ErrorResponse;
+    const errorResponse = handleError(error, "server");
+    return JSON.parse(JSON.stringify(errorResponse));
   }
 }
 
@@ -302,6 +306,7 @@ export async function getPatients(
       },
     };
   } catch (error) {
-    return handleError(error) as ErrorResponse;
+    const errorResponse = handleError(error, "server");
+    return JSON.parse(JSON.stringify(errorResponse));
   }
 }
