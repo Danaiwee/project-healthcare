@@ -1,8 +1,11 @@
+![assignment_page-0001](https://github.com/user-attachments/assets/de695350-7450-4824-b3d9-e5fbfe4cf524)
+
+
 # **Full-Stack Healthcare Profile Management Platform with Next.js**
 
 This project is a healthcare-focused web application where patients can securely fill in and manage their personal health information, while administrators can monitor patient data in **real time**. Built with a modern full-stack approach using **Next.js, MongoDB, JWT-based authentication, Pusher, and Tailwind CSS**, the application is designed to store and track patient information over time with a clean,**responsive UI and real-time synchronization.**
 
-# **Backend & Server-Side Services**
+## **Backend & Server-Side Services**
 
 - **Next.js API Routes**
 
@@ -23,7 +26,7 @@ This project is a healthcare-focused web application where patients can securely
     - A new patient signs up successfully
     - A patient updates their profile information
 
-# **Frontend Development**
+## **Frontend Development**
 
 - **Next.js with TypeScript**
 
@@ -87,18 +90,18 @@ This project is a healthcare-focused web application where patients can securely
 - ![Zod](https://img.shields.io/badge/-Zod-3E64FF?logo=zod&logoColor=white&style=flat) **Zod**
 - ![Sonner](https://img.shields.io/badge/-Sonner-191919?style=flat&logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOCIgaGVpZ2h0PSIxOCI+PHJlY3Qgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiByeD0iMiIvPjwvc3ZnPg==) **Sonner**
 
-# **Installation & Setup**
+## **Installation & Setup**
 
 Follow the steps below to clone, configure, and run the project locally.
 
-## **1. Clone the Repository**
+#### **1. Clone the Repository**
 
 ```bash
 git clone https://github.com/Danaiwee/project-healthcare.git
 cd your-repository-name
 ```
 
-## **2. Install Dependencies**
+#### **2. Install Dependencies**
 
 Make sure you have Node.js (v18 or later) installed.
 
@@ -106,7 +109,7 @@ Make sure you have Node.js (v18 or later) installed.
 npm install
 ```
 
-## **3. Environment Variables**
+#### **3. Environment Variables**
 
 Create a .env file in the root directory and add the following environment variables:
 
@@ -118,13 +121,13 @@ MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret_key
 
 # Pusher
-PUSHER_APP_ID=your_pusher_app_id
-PUSHER_KEY=your_pusher_key
-PUSHER_SECRET=your_pusher_secret
-PUSHER_CLUSTER=your_pusher_cluster
+NEXT_PUBLIC_PUSHER_APP_ID=""
+NEXT_PUBLIC_PUSHER_PUBLISHABLE_KEY=""
+PUSHER_SECRET_KEY=""
+NEXT_PUBLIC_PUSHER_CLUSTER=""
 ```
 
-## **4. Run the Development Server**
+#### **4. Run the Development Server**
 
 ```bash
 npm run dev
@@ -136,7 +139,7 @@ The application will be available at:
 http://localhost:3000
 ```
 
-## **5.Build for Production (Optional)**
+#### **5.Build for Production (Optional)**
 
 ```bash
 npm run build
